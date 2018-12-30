@@ -1,18 +1,52 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-//import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 
+import 'package:fllevent/model/teams_model.dart';
 
-var eventNameList = ["The Iron Lions", "for sale by owner", "an event"];
-var eventLocationList = ["Marion Iowa", "Cedar Rappids Iowa", "3"];
+var teamNameList = ["The Iron Lions", "for sale by owner", "an event"];
+var teamLocationList = ["Marion Iowa", "Cedar Rappids Iowa", "3"];
 
+Future<TeamsPostList> fetchPost() async {
+  final response =
+      await http.get('http://fllevent.com:4000/api/v1/team/allteams');
+
+  if (response.statusCode == 200) {
+    // If the call to the server was successful, parse the JSON
+    return TeamsPostList.fromJson(jsonDecode(response.body));
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load post');
+  }
+}
 
 class Teams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new ListView.builder(
-      itemBuilder: (context, position) {
-        return Column(
+     return FutureBuilder<TeamsPostList>(
+      future: fetchPost(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+          case ConnectionState.waiting:
+            return new Text('loading...');
+          default:
+            if (snapshot.hasError)
+              return Text('Error: ${snapshot.error}');
+            else
+              return createListView(context, snapshot);
+        }
+      },
+    );
+  }
 
+  Widget createListView(BuildContext context, AsyncSnapshot snapshot) {
+    return new ListView.builder(
+        itemCount: snapshot.data.teamsPost.length,
+        itemBuilder: (context, position) {
+        return Column(
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,44 +55,42 @@ class Teams extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                      padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
                       child: Text(
-                        eventNameList[position],
+                        snapshot.data.teamsPost[position].teamName,
                         style: TextStyle(
                             fontSize: 22.0, fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
-                      padding:
-                      const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                      padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
                       child: Text(
-                        eventLocationList[position],
+                        snapshot.data.teamsPost[position].teamNumber.toString(),
                         style: TextStyle(fontSize: 18.0),
                       ),
                     ),
                   ],
                 ),
-//                  Padding(
-//                    padding: const EdgeInsets.all(8.0),
-//                    child: Column(
-//                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                      children: <Widget>[
-//                        Text(
-//                          "5m",
-//                          style: TextStyle(color: Colors.grey),
-//                        ),
-//                        Padding(
-//                          padding: const EdgeInsets.all(8.0),
-//                          child: Icon(
-//                            Icons.star_border,
-//                            size: 35.0,
-//                            color: Colors.grey,
-//                          ),
-//                        ),
-//                      ],
-//                    ),
-//                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text(
+                        snapshot.data.teamsPost.length.toString(),
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.star_border,
+                          size: 35.0,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
             Divider(
@@ -68,8 +100,138 @@ class Teams extends StatelessWidget {
           ],
         );
       },
-      itemCount: eventNameList.length,
     );
   }
-
 }
+
+//class Teams extends StatelessWidget {
+////  final Future<TeamsPostList>;
+//  @override
+//  Widget build(BuildContext context) {
+//    return new ListView.builder(
+////    return FutureBuilder<TeamsPostList>(
+////      future: fetchPost(),
+////      builder: (context, snapshot) {
+////        if (snapshot.hasData) {
+//////            return Text(snapshot.data.teamsPost[2].teamName);
+////          return Column(
+////            children: <Widget>[
+////              Row(
+////                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+////                children: <Widget>[
+////                  Column(
+////                    crossAxisAlignment: CrossAxisAlignment.start,
+////                    children: <Widget>[
+////                      Padding(
+////                        padding:
+////                            const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+////                        child: Text(
+////                          snapshot.data.teamsPost[1].teamName,
+////                          style: TextStyle(
+////                              fontSize: 22.0, fontWeight: FontWeight.bold),
+////                        ),
+////                      ),
+////                      Padding(
+////                        padding:
+////                            const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+////                        child: Text(
+////                          snapshot.data.teamsPost[1].eventName,
+//////                        teamLocationList[position],
+////                          style: TextStyle(fontSize: 18.0),
+////                        ),
+////                      ),
+////                    ],
+////                  ),
+////                  Padding(
+////                    padding: const EdgeInsets.all(8.0),
+////                    child: Column(
+////                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+////                      children: <Widget>[
+////                        Text(
+////                          "5m",
+////                          style: TextStyle(color: Colors.grey),
+////                        ),
+////                        Padding(
+////                          padding: const EdgeInsets.all(8.0),
+////                          child: Icon(
+////                            Icons.star_border,
+////                            size: 35.0,
+////                            color: Colors.grey,
+////                          ),
+////                        ),
+////                      ],
+////                    ),
+////                  ),
+////                ],
+////              ),
+////              Divider(
+////                height: 2.0,
+////                color: Colors.grey,
+////              )
+////            ],
+////            itemCount: snapshot.data.teamsPost.length,
+////          );
+////        } else if (snapshot.hasError) {
+////          return Text("${snapshot.error}");
+////        }
+////      },
+////    );
+//      itemBuilder: (context, position) {
+//        return Column(
+//          children: <Widget>[
+//            Row(
+//              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//              children: <Widget>[
+//                Column(
+//                  crossAxisAlignment: CrossAxisAlignment.start,
+//                  children: <Widget>[
+//                    Padding(
+//                      padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+//                      child: Text(
+//                        teamNameList[position],
+//                        style: TextStyle(
+//                            fontSize: 22.0, fontWeight: FontWeight.bold),
+//                      ),
+//                    ),
+//                    Padding(
+//                      padding: const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+//                      child: Text(
+//                        teamLocationList[position],
+//                        style: TextStyle(fontSize: 18.0),
+//                      ),
+//                    ),
+//                  ],
+//                ),
+//                Padding(
+//                  padding: const EdgeInsets.all(8.0),
+//                  child: Column(
+//                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                    children: <Widget>[
+//                      Text(
+//                        "5m",
+//                        style: TextStyle(color: Colors.grey),
+//                      ),
+//                      Padding(
+//                        padding: const EdgeInsets.all(8.0),
+//                        child: Icon(
+//                          Icons.star_border,
+//                          size: 35.0,
+//                          color: Colors.grey,
+//                        ),
+//                      ),
+//                    ],
+//                  ),
+//                ),
+//              ],
+//            ),
+//            Divider(
+//              height: 2.0,
+//              color: Colors.grey,
+//            )
+//          ],
+//        );
+//      },
+//      itemCount: teamNameList.length,
+//    );
+//  }
+//}
