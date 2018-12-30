@@ -5,33 +5,6 @@ import 'package:flutter/material.dart';
 var eventNameList = ["iowa state", "mississippi state", "an event"];
 var eventLocationList = ["Iowa state university", "2", "3"];
 
-//class Match {}
-//  final String MatchID;
-//  final String TeamName;
-//  final int TeamNumber;
-//  final int matchOne;
-//  final int matchTwo;
-//  final int matchThree;
-//
-//class Event {
-//  final String eventName;
-//  final
-//}
-
-//void fetchEvents() {
-//  var isLoading = false;
-//  var events = [];
-//
-//  _fetchData() async {
-//    isLoading = true;
-//
-//    final response = await http.get("http://fllevent.com:4000/api/v1/event/allevents");
-//    if (response.statusCode ==200) {
-//      events = (json.decode(response.body) as List)
-//          .map(((data) => new ))
-//    }
-//  }
-//}
 
 class Events extends StatelessWidget {
   @override

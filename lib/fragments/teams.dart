@@ -1,11 +1,74 @@
 import 'package:flutter/material.dart';
+//import 'package:http/http.dart' as http;
+
+
+var eventNameList = ["The Iron Lions", "for sale by owner", "an event"];
+var eventLocationList = ["Marion Iowa", "Cedar Rappids Iowa", "3"];
+
 
 class Teams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return new Center(
-      child: new Text("Teams"),
+    return new ListView.builder(
+      itemBuilder: (context, position) {
+        return Column(
+
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding:
+                      const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 6.0),
+                      child: Text(
+                        eventNameList[position],
+                        style: TextStyle(
+                            fontSize: 22.0, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.fromLTRB(12.0, 6.0, 12.0, 12.0),
+                      child: Text(
+                        eventLocationList[position],
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    ),
+                  ],
+                ),
+//                  Padding(
+//                    padding: const EdgeInsets.all(8.0),
+//                    child: Column(
+//                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                      children: <Widget>[
+//                        Text(
+//                          "5m",
+//                          style: TextStyle(color: Colors.grey),
+//                        ),
+//                        Padding(
+//                          padding: const EdgeInsets.all(8.0),
+//                          child: Icon(
+//                            Icons.star_border,
+//                            size: 35.0,
+//                            color: Colors.grey,
+//                          ),
+//                        ),
+//                      ],
+//                    ),
+//                  ),
+              ],
+            ),
+            Divider(
+              height: 2.0,
+              color: Colors.grey,
+            )
+          ],
+        );
+      },
+      itemCount: eventNameList.length,
     );
   }
 
