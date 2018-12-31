@@ -315,3 +315,4 @@ fabric.properties
 
 *.proporties
 *.jks
+/private-keys

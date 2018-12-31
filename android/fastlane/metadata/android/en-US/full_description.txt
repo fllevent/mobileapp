@@ -1,0 +1,1 @@
+Fllevent.com is a website for getting live Fll event scores and this is an app for accessing the website with the ability to send push notifications when your team runs in an event
