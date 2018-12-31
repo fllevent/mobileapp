@@ -36,8 +36,10 @@ android {
         applicationId "com.fllevent.fllevent"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+//        versionCode flutterVersionCode.toInteger()
+        versionCode 1
+//        versionName flutterVersionName
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

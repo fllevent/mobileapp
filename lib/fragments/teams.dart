@@ -68,26 +68,26 @@ class Teams extends StatelessWidget {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text(
-                        snapshot.data.teamsPost.length.toString(),
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Icon(
-                          Icons.star_border,
-                          size: 35.0,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+//                Padding(
+//                  padding: const EdgeInsets.all(8.0),
+//                  child: Column(
+//                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                    children: <Widget>[
+//                      Text(
+//                        snapshot.data.teamsPost.length.toString(),
+//                        style: TextStyle(color: Colors.grey),
+//                      ),
+//                      Padding(
+//                        padding: const EdgeInsets.all(8.0),
+//                        child: Icon(
+//                          Icons.star_border,
+//                          size: 35.0,
+//                          color: Colors.grey,
+//                        ),
+//                      ),
+//                    ],
+//                  ),
+//                ),
               ],
             ),
             Divider(
